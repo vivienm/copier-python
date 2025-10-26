@@ -101,3 +101,10 @@ filterwarnings = [
     "error",
 ]
 {% endif %}
+{% if doc_generator == "sphinx" %}
+
+[tool.typos.files]
+extend-exclude = [
+    "docs/_build/*",
+]
+{% endif %}
