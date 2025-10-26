@@ -36,7 +36,10 @@ Issues = "{{ repo_url }}/issues"
 {% if project_type != "virtual" %}
 
 [build-system]
-{% if build_system == "hatchling" %}
+{% if build_system == "uv" %}
+requires = ["uv_build"]
+build-backend = "uv_build"
+{% elif build_system == "hatchling" %}
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 {% elif build_system == "maturin" %}

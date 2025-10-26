@@ -29,9 +29,10 @@ build_system:
   help: "Build system"
   type: "str"
   choices:
+    - "uv"
     - "hatchling"
     - "maturin"
-  default: "hatchling"
+  default: "uv"
 
 project_description:
   help: "Project description"
