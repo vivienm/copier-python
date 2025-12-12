@@ -113,6 +113,15 @@ script_name:
     You must provide a name for the Python script.
     {%- endif -%}
 
+test_runner:
+  when: "{{ project_type != 'virtual' }}"
+  help: "Test runner"
+  type: "str"
+  choices:
+    - "pytest"
+    - "none"
+  default: "pytest"
+
 doc_generator:
   help: "Documentation generator"
   type: "str"

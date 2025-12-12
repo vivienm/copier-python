@@ -54,7 +54,9 @@ dev = [
 {% endif %}
     "mypy>=1.11.0",
     "pip-audit>=2.7.3",
+{% if test_runner == "pytest" %}
     "pytest>=8.3.1",
+{% endif %}
     "ruff>=0.5.4",
     "rust-just>=1.43.1",
 {% if doc_generator == "sphinx" %}
