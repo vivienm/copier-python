@@ -1,6 +1,6 @@
 set shell := ["bash", "-uc"]
 
-ci:{%if build_system == "maturin" %} cargo-fmt cargo-clippy cargo-audit{% endif %} ruff mypy{% if test_runner == "pytest" %} pytest{% endif %}{% if project_type == "library" %} sphinx{% endif %} pip-audit typos
+ci:{%if build_system == "maturin" %} cargo-fmt cargo-clippy cargo-audit{% endif %} ruff mypy{% if test_runner == "pytest" %} pytest{% endif %}{% if doc_generator == "sphinx" %} sphinx{% endif %} pip-audit typos
 {% if build_system == "maturin" %}
 
 [group('rust')]

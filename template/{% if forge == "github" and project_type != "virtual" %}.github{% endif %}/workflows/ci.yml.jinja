@@ -63,7 +63,7 @@ jobs:
           RUSTFLAGS: "-D warnings"
 {% endif %}
           UV_LOCKED: "true"
-{% if project_type == "library" %}
+{% if doc_generator == "sphinx" %}
       - name: "Upload docs artifact"
         uses: "actions/upload-artifact@v4"
         with:
