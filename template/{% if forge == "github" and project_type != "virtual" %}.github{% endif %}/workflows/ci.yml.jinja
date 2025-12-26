@@ -56,13 +56,13 @@ jobs:
 {% else %}
         run: "uv run -- just ci"
 {% endif %}
-{% if build_system == "maturin" %}
         env:
+{% if build_system == "maturin" %}
           RUSTC_WRAPPER: "sccache"
           SCCACHE_GHA_ENABLED: "true"
           RUSTFLAGS: "-D warnings"
-          UV_LOCKED: "true"
 {% endif %}
+          UV_LOCKED: "true"
 {% if project_type == "library" %}
       - name: "Upload docs artifact"
         uses: "actions/upload-artifact@v4"
