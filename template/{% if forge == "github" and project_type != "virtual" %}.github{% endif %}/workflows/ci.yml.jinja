@@ -63,6 +63,7 @@ jobs:
           RUSTFLAGS: "-D warnings"
 {% endif %}
           UV_LOCKED: "true"
+          RUFF_OUTPUT_FORMAT: "github"
 {% if doc_generator == "sphinx" %}
       - name: "Upload docs artifact"
         uses: "actions/upload-artifact@v4"
