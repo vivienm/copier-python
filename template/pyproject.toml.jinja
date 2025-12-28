@@ -93,6 +93,10 @@ strict = true
 extend-select= [
     "I",  # isort
     "RUF",  # Ruff
+{% if type_checker == "ty" %}
+{# https://docs.astral.sh/ty/reference/typing-faq/#does-ty-have-a-strict-mode #}
+    "ANN",  # Annotations
+{% endif %}
 ]
 unfixable = [
     "F401",  # unused imports
