@@ -8,7 +8,7 @@ An opinionated [Copier](https://copier.readthedocs.io/en/stable/) template for P
 * Rust extensions with [maturin](https://www.maturin.rs/).
 * Pre-configured tools for code formatting, quality analysis, documentation and testing:
   * [ruff](https://github.com/charliermarsh/ruff)
-  * [mypy](https://mypy.readthedocs.io/)
+  * [mypy](https://mypy.readthedocs.io/) or [ty](https://docs.astral.sh/ty/)
   * [pytest](https://docs.pytest.org/en/stable/)
   * [sphinx](https://sphinx-doc.org/) ([furo theme](https://pradyunsg.me/furo/))
   * [pip-audit](https://pypi.org/project/pip-audit/)

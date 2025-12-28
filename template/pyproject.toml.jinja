@@ -53,7 +53,11 @@ dev = [
 {% if doc_generator == "sphinx" %}
     "furo>=2024.8.6",
 {% endif %}
+{% if type_checker == "mypy" %}
     "mypy>=1.11.0",
+{% elif type_checker == "ty" %}
+    "ty>=0.0.7",
+{% endif %}
     "pip-audit>=2.7.3",
 {% if test_runner == "pytest" %}
     "pytest>=8.3.1",
@@ -79,9 +83,11 @@ cache-keys = [
 python-source = "python"
 module-name = "{{ module_name }}._core"
 {% endif %}
+{% if type_checker == "mypy" %}
 
 [tool.mypy]
 strict = true
+{% endif %}
 
 [tool.ruff.lint]
 extend-select= [

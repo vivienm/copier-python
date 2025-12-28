@@ -127,6 +127,14 @@ python_version_info:
   type: "json"
   default: "[{{ python_version.split('.')[0] | int }}, {{ python_version.split('.')[1] | int }}]"
 
+type_checker:
+  help: "Type checker"
+  type: "str"
+  choices:
+    - "mypy"
+    - "ty"
+  default: "mypy"
+
 test_runner:
   help: "Test runner"
   type: "str"
