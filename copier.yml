@@ -22,7 +22,7 @@ project_type:
   choices:
     - "application"
     - "library"
-    - "virtual"
+    - "bare"
 
 build_system:
   when: "{{ project_type == 'library' }}"
@@ -90,7 +90,7 @@ copyright_year:
     {%- endif -%}
 
 package_name:
-  when: "{{ project_type != 'virtual' }}"
+  when: "{{ project_type != 'bare' }}"
   help: "Python package name e.g. on PyPI (dashes are recommended over underscores)"
   type: "str"
   default: "{{ project_slug }}"
@@ -114,15 +114,20 @@ script_name:
     {%- endif -%}
 
 test_runner:
-  when: "{{ project_type != 'virtual' }}"
   help: "Test runner"
   type: "str"
   choices:
     - "pytest"
     - "none"
-  default: "pytest"
+  default: >
+    {%- if project_type == 'bare' -%}
+    none
+    {%- else -%}
+    pytest
+    {%- endif -%}
 
 doc_generator:
+  when: "{{ project_type != 'bare' }}"
   help: "Documentation generator"
   type: "str"
   choices:
@@ -171,12 +176,10 @@ github_repo:
   help: "Name of the GitHub repository"
   type: "str"
   default: >
-    {%- if project_type == 'application' -%}
-    {{ project_slug }}
-    {%- elif project_type == 'library' -%}
+    {%- if project_type == 'library' -%}
     python-{{ project_slug }}
-    {%- elif project_type == 'virtual' -%}
-    {{ project_slug }}-venv
+    {%- else -%}
+    {{ project_slug }}
     {%- endif -%}
   validator: >
     {%- if not github_repo -%}

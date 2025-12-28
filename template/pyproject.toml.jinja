@@ -33,7 +33,7 @@ Repository = "{{ repo_url }}"
 Issues = "{{ repo_url }}/issues"
 {% endif %}
 {% endif %}
-{% if project_type != "virtual" %}
+{% if project_type != "bare" %}
 
 [build-system]
 {% if build_system == "uv" %}
@@ -45,6 +45,7 @@ build-backend = "hatchling.build"
 {% elif build_system == "maturin" %}
 requires = ["maturin>=1.0,<2.0"]
 build-backend = "maturin"
+{% endif %}
 {% endif %}
 
 [dependency-groups]
@@ -90,6 +91,7 @@ extend-select= [
 unfixable = [
     "F401",  # unused imports
 ]
+{% if test_runner == "pytest" %}
 
 [tool.pytest.ini_options]
 addopts = [
