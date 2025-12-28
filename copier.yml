@@ -113,6 +113,20 @@ script_name:
     You must provide a name for the Python script.
     {%- endif -%}
 
+python_version:
+  help: "Minimum Python version"
+  type: "str"
+  default: "3.12"
+  validator: >
+    {%- if not python_version | regex_search('^3\\.\\d{1,2}$') -%}
+    The Python version must be in the format "3.x".
+    {%- endif -%}
+
+python_version_info:
+  when: false
+  type: "json"
+  default: "[{{ python_version.split('.')[0] | int }}, {{ python_version.split('.')[1] | int }}]"
+
 test_runner:
   help: "Test runner"
   type: "str"
@@ -139,20 +153,6 @@ doc_generator:
     {%- else -%}
     none
     {%- endif -%}
-
-python_version:
-  help: "Minimum Python version"
-  type: "str"
-  default: "3.12"
-  validator: >
-    {%- if not python_version | regex_search('^3\\.\\d{1,2}$') -%}
-    The Python version must be in the format "3.x".
-    {%- endif -%}
-
-python_version_info:
-  when: false
-  type: "json"
-  default: "[{{ python_version.split('.')[0] | int }}, {{ python_version.split('.')[1] | int }}]"
 
 forge:
   help: "Code hosting platform for the project"
