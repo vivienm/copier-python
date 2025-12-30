@@ -11,7 +11,7 @@ An opinionated [Copier](https://copier.readthedocs.io/en/stable/) template for P
   * [mypy](https://mypy.readthedocs.io/) or [ty](https://docs.astral.sh/ty/)
   * [pytest](https://docs.pytest.org/en/stable/)
   * [sphinx](https://sphinx-doc.org/) ([furo theme](https://pradyunsg.me/furo/))
-  * [pip-audit](https://pypi.org/project/pip-audit/)
+  * [pip-audit](https://pypi.org/project/pip-audit/) or [pysentry](https://pysentry.com/)
 * Task automation with [just](https://github.com/casey/just).
 * Support for [GitHub actions](https://github.com/features/actions) and [GitHub pages](https://pages.github.com/).
 

@@ -58,7 +58,11 @@ dev = [
 {% elif type_checker == "ty" %}
     "ty>=0.0.7",
 {% endif %}
+{% if vulnerability_scanner == "pip-audit" %}
     "pip-audit>=2.7.3",
+{% elif vulnerability_scanner == "pysentry" %}
+    "pysentry-rs>=0.3.13",
+{% endif %}
 {% if test_runner == "pytest" %}
     "pytest>=8.3.1",
     "pytest-randomly>=3.15.0",

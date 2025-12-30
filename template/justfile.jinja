@@ -1,6 +1,6 @@
 set shell := ["bash", "-uc"]
 
-ci:{%if build_system == "maturin" %} cargo-fmt cargo-clippy cargo-audit{% endif %} ruff {{ type_checker }}{% if test_runner == "pytest" %} pytest{% endif %}{% if doc_generator == "sphinx" %} sphinx{% endif %} pip-audit typos
+ci:{%if build_system == "maturin" %} cargo-fmt cargo-clippy cargo-audit{% endif %} ruff {{ type_checker }}{% if test_runner == "pytest" %} pytest{% endif %}{% if doc_generator == "sphinx" %} sphinx{% endif %} {{ vulnerability_scanner }} typos
 {% if build_system == "maturin" %}
 
 [group('rust')]
@@ -62,9 +62,13 @@ sphinx:
 {% if build_system == "maturin" %}
 [group('python')]
 {% endif %}
-pip-audit:
+{{ vulnerability_scanner }}:
+{% if vulnerability_scanner == "pip-audit" %}
   uv run pip-audit --strict --require-hashes --disable-pip --requirement \
     <(uv export --format requirements-txt --all-extras --no-emit-project)
+{% elif vulnerability_scanner == "pysentry" %}
+  uv run pysentry-rs
+{% endif %}
 
 typos:
   uv run typos

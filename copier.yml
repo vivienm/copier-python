@@ -162,6 +162,14 @@ doc_generator:
     none
     {%- endif -%}
 
+vulnerability_scanner:
+  help: "Vulnerability scanner"
+  type: "str"
+  choices:
+    - "pip-audit"
+    - "pysentry"
+  default: "pip-audit"
+
 forge:
   help: "Code hosting platform for the project"
   type: "str"
