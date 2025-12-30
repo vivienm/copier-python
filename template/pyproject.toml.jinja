@@ -55,8 +55,6 @@ dev = [
 {% endif %}
 {% if type_checker == "mypy" %}
     "mypy>=1.11.0",
-{% elif type_checker == "ty" %}
-    "ty>=0.0.7",
 {% endif %}
 {% if vulnerability_scanner == "pip-audit" %}
     "pip-audit>=2.7.3",
@@ -71,6 +69,9 @@ dev = [
     "rust-just>=1.43.1",
 {% if doc_generator == "sphinx" %}
     "sphinx>=8.0.2",
+{% endif %}
+{% if type_checker == "ty" %}
+    "ty>=0.0.7",
 {% endif %}
     "typos>=1.30.0",
 ]
