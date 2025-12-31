@@ -67,7 +67,7 @@ sphinx:
   uv run pip-audit --strict --require-hashes --disable-pip --requirement \
     <(uv export --format requirements-txt --all-extras --no-emit-project)
 {% elif vulnerability_scanner == "pysentry" %}
-  uv run pysentry-rs
+  uv run pysentry-rs -q
 {% endif %}
 
 typos:
