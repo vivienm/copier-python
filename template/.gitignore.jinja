@@ -1,14 +1,14 @@
-{% if project_type != "virtual" %}
+{% if type_checker == "mypy" %}
 /.mypy_cache/
-/.pytest_cache/
-/.ruff_cache/
 {% endif %}
+{% if test_runner == "pytest" %}
+/.pytest_cache/
+{% endif %}
+/.ruff_cache/
 /.venv/
-{% if project_type != "virtual" %}
 /build/
 /dist/
 {% if build_system == "maturin" %}
 /target/
-{% endif %}
 {% endif %}
 __pycache__/
