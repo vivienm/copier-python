@@ -5,15 +5,15 @@ ci:{%if build_system == "maturin" %} cargo-fmt cargo-clippy cargo-audit{% endif 
 
 [group('rust')]
 cargo-fmt:
-  cargo fmt --check
+    cargo fmt --check
 
 [group('rust')]
 cargo-clippy:
-  cargo clippy --all-targets
+    cargo clippy --all-targets
 
 [group('rust')]
 cargo-audit:
-  cargo audit
+    cargo audit
 {% endif %}
 
 {% if build_system == "maturin" %}
@@ -25,22 +25,22 @@ ruff: ruff-check ruff-format
 [group('python')]
 {% endif %}
 ruff-check:
-  uv run ruff check
+    uv run ruff check
 
 {% if build_system == "maturin" %}
 [group('python')]
 {% endif %}
 ruff-format:
-  uv run ruff format --check
+    uv run ruff format --check
 
 {% if build_system == "maturin" %}
 [group('python')]
 {% endif %}
 {{ type_checker }}:
 {% if type_checker == "mypy" %}
-  uv run mypy .
+    uv run mypy .
 {% elif type_checker == "ty" %}
-  uv run ty check
+    uv run ty check
 {% endif %}
 {% if test_runner == "pytest" %}
 
@@ -48,7 +48,7 @@ ruff-format:
 [group('python')]
 {% endif %}
 pytest *args="":
-  uv run pytest {{ '{{' }}args{{ '}}' }}
+    uv run pytest {{ '{{' }}args{{ '}}' }}
 {% endif %}
 {% if doc_generator == "sphinx" %}
 
@@ -56,7 +56,7 @@ pytest *args="":
 [group('python')]
 {% endif %}
 sphinx:
-  uv run sphinx-build docs docs/_build/html
+    uv run sphinx-build docs docs/_build/html
 {% endif %}
 
 {% if build_system == "maturin" %}
@@ -64,16 +64,16 @@ sphinx:
 {% endif %}
 {{ vulnerability_scanner }}:
 {% if vulnerability_scanner == "pip-audit" %}
-  uv run pip-audit --strict --require-hashes --disable-pip --requirement \
+    uv run pip-audit --strict --require-hashes --disable-pip --requirement \
     <(uv export --format requirements-txt --all-extras --no-emit-project)
 {% elif vulnerability_scanner == "pysentry" %}
-  uv run pysentry-rs -q
+    uv run pysentry-rs -q
 {% endif %}
 
 typos:
-  uv run typos
+    uv run typos
 {% if project_type == "application" %}
 
 run *args="":
-  uv run {{ script_name }} {{ '{{' }}args{{ '}}' }}
+    uv run {{ script_name }} {{ '{{' }}args{{ '}}' }}
 {% endif %}
