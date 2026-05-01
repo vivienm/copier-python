@@ -131,9 +131,9 @@ type_checker:
   help: "Type checker"
   type: "str"
   choices:
-    - "mypy"
     - "ty"
-  default: "mypy"
+    - "mypy"
+  default: "ty"
 
 test_runner:
   help: "Test runner"
