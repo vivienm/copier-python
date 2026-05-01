@@ -27,7 +27,13 @@ copier copy 'https://github.com/vivienm/copier-python' path/to/your/project
 
 and fill in the form.
 
-Go to the project directory and run the tests:
+Go to the project directory and upgrade the dependencies to start on a fresh base:
+
+```bash
+uv lock --upgrade
+```
+
+Then run the tests:
 
 ```bash
 just ci
