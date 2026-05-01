@@ -14,26 +14,26 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v4"
+        uses: "actions/checkout@v6"
 {% if build_system == "maturin" %}
       - name: "Install the Rust toolchain"
         uses: "dtolnay/rust-toolchain@stable"
         with:
           components: "clippy, rustfmt"
       - name: "Install sccache"
-        uses: "mozilla-actions/sccache-action@v0.0.9"
+        uses: "mozilla-actions/sccache-action@v0.0.10"
       - name: "Install development tools"
         uses: "taiki-e/install-action@v2"
         with:
           tool: "cargo-audit"
 {% endif %}
       - name: "Install uv"
-        uses: "astral-sh/setup-uv@v5"
+        uses: "astral-sh/setup-uv@v8.1.0"
         with:
           enable-cache: true
 {% if build_system == "maturin" %}
       - name: "Cache Cargo directories"
-        uses: "actions/cache@v4"
+        uses: "actions/cache@v5"
         with:
 {# Directory ~/.cargo/bin/ is populated by taiki-e/install-action, we don't want to cache it #}
           path: |
@@ -66,7 +66,7 @@ jobs:
           RUFF_OUTPUT_FORMAT: "github"
 {% if doc_generator == "sphinx" %}
       - name: "Upload docs artifact"
-        uses: "actions/upload-artifact@v4"
+        uses: "actions/upload-artifact@v7"
         with:
           name: "docs"
           path: "./docs/_build/html"
@@ -87,15 +87,15 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Download docs artifact"
-        uses: "actions/download-artifact@v4"
+        uses: "actions/download-artifact@v8"
         with:
           name: "docs"
           path: "${{ '{{' }} runner.temp {{ '}}' }}/pages/docs"
       - name: "Upload pages artifact"
-        uses: "actions/upload-pages-artifact@v3"
+        uses: "actions/upload-pages-artifact@v5"
         with:
           path: "${{ '{{' }} runner.temp {{ '}}' }}/pages"
       - name: "Deploy pages"
         id: "deployment"
-        uses: "actions/deploy-pages@v4"
+        uses: "actions/deploy-pages@v5"
 {% endif %}
