@@ -17,15 +17,13 @@ An opinionated [Copier](https://copier.readthedocs.io/en/stable/) template for P
 
 ## Quickstart
 
-To install Copier, please follow the installation instructions [here](https://copier.readthedocs.io/en/stable/#installation).
+First, [install Copier](https://copier.readthedocs.io/en/stable/#installation).
 
-Then, to create a new project based on this template, run:
+Then, to create a new project based on this template, run the following command and fill in the form:
 
 ```bash
 copier copy 'https://github.com/vivienm/copier-python' path/to/your/project
 ```
-
-and fill in the form.
 
 Go to the project directory and upgrade the dependencies to start on a fresh base:
 
@@ -41,7 +39,7 @@ just ci
 
 You are now ready to start coding!
 
-Later on, if this template evolves and you want to update your project, run:
+Later, to update your project as this template evolves, run:
 
 ```bash
 copier update --skip-answered
