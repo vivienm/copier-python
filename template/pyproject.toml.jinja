@@ -37,7 +37,7 @@ Issues = "{{ repo_url }}/issues"
 
 [build-system]
 {% if build_system == "uv" %}
-requires = ["uv_build"]
+requires = ["uv_build<0.12"]
 build-backend = "uv_build"
 {% elif build_system == "hatchling" %}
 requires = ["hatchling"]
