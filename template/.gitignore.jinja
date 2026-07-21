@@ -8,6 +8,10 @@
 /.venv/
 /build/
 /dist/
+{% if nix_flake %}
+/result
+/result-*
+{% endif %}
 {% if build_system == "maturin" %}
 /target/
 {% endif %}

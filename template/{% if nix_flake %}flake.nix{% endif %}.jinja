@@ -1,0 +1,141 @@
+{
+  description = "{{ project_description.removesuffix('.') }}";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+{% if project_type == "application" %}
+
+    pyproject-nix = {
+      url = "github:pyproject-nix/pyproject.nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    uv2nix = {
+      url = "github:pyproject-nix/uv2nix";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    pyproject-build-systems = {
+      url = "github:pyproject-nix/build-system-pkgs";
+      inputs.pyproject-nix.follows = "pyproject-nix";
+      inputs.uv2nix.follows = "uv2nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+{% endif %}
+  };
+
+  outputs =
+    {
+      nixpkgs,
+{% if project_type == "application" %}
+      pyproject-nix,
+      uv2nix,
+      pyproject-build-systems,
+{% endif %}
+      ...
+    }:
+    let
+      inherit (nixpkgs) lib;
+
+      pyprojectToml = builtins.fromTOML (builtins.readFile ./pyproject.toml);
+
+      pythonVersion = lib.versions.majorMinor (lib.trim (builtins.readFile ./.python-version));
+
+      isUnfree = pyprojectToml.project.license.text == "LicenseRef-Proprietary";
+{% if project_type == "application" %}
+
+      workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
+
+      pyprojectOverlay = lib.composeManyExtensions [
+        pyproject-build-systems.overlays.wheel
+        (workspace.mkPyprojectOverlay { sourcePreference = "wheel"; })
+      ];
+{% endif %}
+
+      systems = [
+        "aarch64-darwin"
+        "aarch64-linux"
+        "x86_64-linux"
+      ];
+
+      pkgsFor = lib.genAttrs systems (
+        system:
+        import nixpkgs {
+          inherit system;
+          config.allowUnfree = isUnfree;
+        }
+      );
+
+      eachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
+
+      pythonFor = pkgs: pkgs."python${lib.replaceStrings [ "." ] [ "" ] pythonVersion}";
+    in
+    {
+{% if project_type == "application" %}
+      packages = eachSystem (pkgs: {
+        default =
+          let
+            mainProgram = "{{ script_name }}";
+
+            pythonSet =
+              (pkgs.callPackage pyproject-nix.build.packages {
+                python = pythonFor pkgs;
+              }).overrideScope
+                pyprojectOverlay;
+
+            virtualenv = pythonSet.mkVirtualEnv "${pyprojectToml.project.name}-env" workspace.deps.default;
+          in
+          pkgs.runCommand "${pyprojectToml.project.name}-${pyprojectToml.project.version}"
+            {
+              pname = pyprojectToml.project.name;
+              inherit (pyprojectToml.project) version;
+
+              meta = {
+                inherit mainProgram;
+                inherit (pyprojectToml.project) description;
+                license =
+                  if isUnfree then
+                    lib.licenses.unfree
+                  else
+                    lib.getLicenseFromSpdxId pyprojectToml.project.license.text;
+              };
+            }
+            ''
+              mkdir -p $out/bin
+              ln -s ${virtualenv}/bin/${mainProgram} $out/bin/${mainProgram}
+            '';
+      });
+
+{% endif %}
+      devShells = eachSystem (pkgs: {
+        default =
+          let
+            python = pythonFor pkgs;
+          in
+          pkgs.mkShell {
+            name = pyprojectToml.project.name;
+
+            packages = [
+              pkgs.just
+              pkgs.uv
+              python
+{% if build_system == "maturin" %}
+              pkgs.cargo
+              pkgs.rustc
+              pkgs.clippy
+              pkgs.rustfmt
+              pkgs.cargo-audit
+{% endif %}
+            ];
+
+            env = {
+              UV_PYTHON = python.interpreter;
+              UV_PYTHON_DOWNLOADS = "never";
+            };
+          };
+      });
+
+      formatter = eachSystem (pkgs: pkgs.nixfmt-tree);
+    };
+}

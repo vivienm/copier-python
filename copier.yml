@@ -109,8 +109,8 @@ script_name:
   type: "str"
   default: "{{ package_name }}"
   validator: >
-    {%- if project_type == 'application' and not script_name -%}
-    You must provide a name for the Python script.
+    {%- if not script_name | regex_search('^[a-z][a-z0-9]*([-_][a-z0-9]+)*$') -%}
+    You must provide a valid Python script name.
     {%- endif -%}
 
 python_version:
@@ -161,6 +161,11 @@ doc_generator:
     {%- else -%}
     none
     {%- endif -%}
+
+nix_flake:
+  help: "Generate a Nix flake"
+  type: "bool"
+  default: false
 
 forge:
   help: "Code hosting platform for the project"
