@@ -95,7 +95,7 @@ package_name:
   type: "str"
   default: "{{ project_slug }}"
   validator: >
-    {%- if not package_name | regex_search('^[a-z][a-z0-9]+([-_][a-z0-9]+)*$') -%}
+    {%- if not package_name | regex_search('^[a-z][a-z0-9]*([-_][a-z0-9]+)*$') -%}
     You must provide a valid Python package name.
     {%- endif -%}
 
