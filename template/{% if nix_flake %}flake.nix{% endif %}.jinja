@@ -42,7 +42,7 @@
 
       pythonVersion = lib.versions.majorMinor (lib.trim (builtins.readFile ./.python-version));
 
-      isUnfree = pyprojectToml.project.license.text == "LicenseRef-Proprietary";
+      isUnfree = pyprojectToml.project.license == "LicenseRef-Proprietary";
 {% if project_type == "application" %}
 
       workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
@@ -98,7 +98,7 @@
                   if isUnfree then
                     lib.licenses.unfree
                   else
-                    lib.getLicenseFromSpdxId pyprojectToml.project.license.text;
+                    lib.getLicenseFromSpdxId pyprojectToml.project.license;
               };
             }
             ''

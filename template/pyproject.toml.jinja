@@ -7,7 +7,7 @@ readme = "README.md"
 authors = [
     { name = "{{ user_name }}", email = "{{ user_email }}" },
 ]
-license = { text = "{% if license == 'Proprietary' %}LicenseRef-Proprietary{% else %}{{ license }}{% endif %}" }
+license = "{% if license == 'Proprietary' %}LicenseRef-Proprietary{% else %}{{ license }}{% endif %}"
 classifiers = ["Private :: Do Not Upload"]
 requires-python = ">={{ python_version }}"
 {% if project_type == "application" %}
