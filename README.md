@@ -26,10 +26,12 @@ Then, to create a new project based on this template, run the following command 
 copier copy 'https://github.com/vivienm/copier-python' path/to/your/project
 ```
 
-Go to the project directory and upgrade the dependencies to start on a fresh base:
+Go to the project directory, upgrade the dependencies, and update their minimum versions in `pyproject.toml`:
 
 ```bash
-uv lock --upgrade
+uv lock
+uvx uv-bump
+uv sync
 ```
 
 If you chose the uv build backend, also update the `uv_build` requirement in `pyproject.toml` for your uv version (`uv --version`), following the [upstream recommendation](https://docs.astral.sh/uv/concepts/build-backend/#using-the-uv-build-backend).
