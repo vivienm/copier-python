@@ -32,6 +32,8 @@ Go to the project directory and upgrade the dependencies to start on a fresh bas
 uv lock --upgrade
 ```
 
+If you chose the uv build backend, also update the `uv_build` requirement in `pyproject.toml` for your uv version (`uv --version`), following the [upstream recommendation](https://docs.astral.sh/uv/concepts/build-backend/#using-the-uv-build-backend).
+
 Then run the tests:
 
 ```bash
