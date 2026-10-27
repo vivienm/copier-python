@@ -2,6 +2,8 @@
 
 An opinionated [Copier](https://copier.readthedocs.io/en/stable/) template for Python projects managed by [uv](https://docs.astral.sh/uv/).
 
+Generated projects require Python 3.11 or newer.
+
 ## Features
 
 * CLI and autocompletion with [Typer](https://typer.tiangolo.com/).
@@ -18,7 +20,7 @@ An opinionated [Copier](https://copier.readthedocs.io/en/stable/) template for P
 
 ## Quickstart
 
-First, [install Copier](https://copier.readthedocs.io/en/stable/#installation).
+First, install [uv](https://docs.astral.sh/uv/) and [Copier](https://copier.readthedocs.io/en/stable/#installation).
 
 Then, to create a new project based on this template, run the following command and fill in the form:
 
@@ -26,7 +28,14 @@ Then, to create a new project based on this template, run the following command 
 copier copy 'https://github.com/vivienm/copier-python' path/to/your/project
 ```
 
-Go to the project directory, upgrade the dependencies, and update their minimum versions in `pyproject.toml`:
+Go to the project directory and initialize a Git repository:
+
+```bash
+cd path/to/your/project
+git init
+```
+
+Upgrade the dependencies and update their minimum versions in `pyproject.toml`:
 
 ```bash
 uv lock
@@ -36,10 +45,11 @@ uv sync
 
 If you chose the uv build backend, also update the `uv_build` requirement in `pyproject.toml` for your uv version (`uv --version`), following the [upstream recommendation](https://docs.astral.sh/uv/concepts/build-backend/#using-the-uv-build-backend).
 
-Then run the tests:
+Format the generated Python files, then run the checks:
 
 ```bash
-just ci
+uv run ruff format
+uv run just ci
 ```
 
 You are now ready to start coding!

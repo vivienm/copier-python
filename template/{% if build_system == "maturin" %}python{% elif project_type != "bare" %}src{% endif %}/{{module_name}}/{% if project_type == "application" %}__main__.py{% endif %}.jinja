@@ -1,6 +1,6 @@
-{% set has_strenum = python_version_info >= [3, 11] %}
+{% from "macros.jinja" import python_string %}
 import logging
-from enum import {% if has_strenum %}StrEnum{% else %}Enum{% endif %}{{ '' }}
+from enum import StrEnum
 from typing import Annotated
 
 import typer
@@ -10,7 +10,7 @@ from . import hello
 app = typer.Typer()
 
 
-class LogLevel({% if has_strenum %}StrEnum{% else %}str, Enum{% endif %}):
+class LogLevel(StrEnum):
     DEBUG = "debug"
     INFO = "info"
     WARNING = "warning"
@@ -33,7 +33,7 @@ def main(
         ),
     ] = LogLevel.INFO,
 ) -> None:
-    """{{ project_description }}"""
+    {{ python_string(project_description) }}
     setup_logging(log_level)
     print(hello())
 

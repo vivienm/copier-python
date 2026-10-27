@@ -1,5 +1,6 @@
+{% from "macros.jinja" import nix_string %}
 {
-  description = "{{ project_description.removesuffix('.') }}";
+  description = {{ nix_string(project_description.removesuffix(".")) }};
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

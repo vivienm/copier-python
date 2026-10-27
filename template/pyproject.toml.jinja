@@ -1,11 +1,12 @@
+{% from "macros.jinja" import toml_string %}
 {# I'd rather indent with two spaces, but this clashes with uv's formatting. #}
 [project]
-name = "{{ module_name | replace('_', '-') }}"
+name = {{ toml_string(module_name | replace('_', '-')) }}
 version = "0.1.0"
-description = "{{ project_description.removesuffix('.') }}"
+description = {{ toml_string(project_description.removesuffix('.')) }}
 readme = "README.md"
 authors = [
-    { name = "{{ user_name }}", email = "{{ user_email }}" },
+    { name = {{ toml_string(user_name) }}, email = {{ toml_string(user_email) }} },
 ]
 license = "{% if license == 'Proprietary' %}LicenseRef-Proprietary{% else %}{{ license }}{% endif %}"
 classifiers = ["Private :: Do Not Upload"]
@@ -25,12 +26,12 @@ dependencies = []
 
 [project.urls]
 {% if pages_url %}
-Documentation = "{{ pages_url }}"
+Documentation = {{ toml_string(pages_url ~ "/docs/") }}
 {% endif %}
 {% if repo_url %}
-Repository = "{{ repo_url }}"
+Repository = {{ toml_string(repo_url) }}
 {% if forge == "github" %}
-Issues = "{{ repo_url }}/issues"
+Issues = {{ toml_string(repo_url ~ "/issues") }}
 {% endif %}
 {% endif %}
 {% if project_type != "bare" %}
@@ -74,6 +75,7 @@ dev = [
 
 [tool.uv]
 cache-keys = [
+    { file = "pyproject.toml" },
     { file = "Cargo.toml" },
     { file = "Cargo.lock" },
     { file = "src/**/*.rs" },
@@ -109,7 +111,11 @@ addopts = [
     "--import-mode=importlib",
 ]
 testpaths = [
+{% if build_system == "maturin" %}
+    "python",
+{% elif project_type != "bare" %}
     "src",
+{% endif %}
     "tests",
 ]
 filterwarnings = [

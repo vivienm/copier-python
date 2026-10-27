@@ -59,7 +59,7 @@ user_email:
   type: "str"
   placeholder: "john@doe.tld"
   validator: >
-    {%- if not user_email | regex_search('^[^\s@]+@[^\s@]+\.[^\s@]+$') -%}
+    {%- if not user_email | regex_search('^[^\s@]+@[^\s@]+\.[^\s@]+\\Z') -%}
     You must provide a valid email address.
     {%- endif -%}
 
@@ -90,13 +90,20 @@ copyright_year:
     {%- endif -%}
 
 package_name:
-  when: "{{ project_type != 'bare' }}"
   help: "Python package name e.g. on PyPI (dashes are recommended over underscores)"
   type: "str"
   default: "{{ project_slug }}"
   validator: >
-    {%- if not package_name | regex_search('^[a-z][a-z0-9]*([-_][a-z0-9]+)*$') -%}
+    {%- if not package_name | regex_search('^[a-z][a-z0-9]*([-_][a-z0-9]+)*\\Z') -%}
     You must provide a valid Python package name.
+    {%- elif project_type != 'bare' and package_name | replace('-', '_') in [
+      'False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+      'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except',
+      'finally', 'for', 'from', 'global', 'if', 'import', 'in', 'is',
+      'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise', 'return',
+      'try', 'while', 'with', 'yield',
+    ] -%}
+    The package name must not be a Python keyword.
     {%- endif -%}
 
 module_name:
@@ -109,7 +116,7 @@ script_name:
   type: "str"
   default: "{{ package_name }}"
   validator: >
-    {%- if not script_name | regex_search('^[a-z][a-z0-9]*([-_][a-z0-9]+)*$') -%}
+    {%- if not script_name | regex_search('^[a-z][a-z0-9]*([-_][a-z0-9]+)*\\Z') -%}
     You must provide a valid Python script name.
     {%- endif -%}
 
@@ -118,8 +125,10 @@ python_version:
   type: "str"
   default: "3.14"
   validator: >
-    {%- if not python_version | regex_search('^3\\.\\d{1,2}$') -%}
+    {%- if not python_version | regex_search('^3\\.\\d{1,2}\\Z') -%}
     The Python version must be in the format "3.x".
+    {%- elif python_version.split('.')[1] | int < 11 -%}
+    This template requires Python 3.11 or newer.
     {%- endif -%}
 
 python_version_info:
@@ -166,6 +175,10 @@ nix_flake:
   help: "Generate a Nix flake"
   type: "bool"
   default: false
+  validator: >
+    {%- if nix_flake and '\x00' in project_description -%}
+    Nix descriptions cannot contain null bytes.
+    {%- endif -%}
 
 forge:
   help: "Code hosting platform for the project"

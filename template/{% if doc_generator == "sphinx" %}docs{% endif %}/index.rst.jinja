@@ -1,7 +1,9 @@
-{{ project_name }}
-{{ project_name | length * "=" }}
+{% from "macros.jinja" import rst_text %}
+{% set title = rst_text(project_name) %}
+{{ title }}
+{{ title | length * "=" }}
 
-{{ project_description }}
+{{ rst_text(project_description) }}
 {% if forge != "none" %}
 
 Repository_

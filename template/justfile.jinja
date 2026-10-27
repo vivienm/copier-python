@@ -57,8 +57,9 @@ ruff-format:
 {% if build_system == "maturin" %}
 [group('python')]
 {% endif %}
-pytest *args="":
-    uv run pytest {{ '{{' }}args{{ '}}' }}
+[positional-arguments]
+pytest *args:
+    uv run pytest "$@"
 {% endif %}
 {% if doc_generator == "sphinx" %}
 
@@ -66,7 +67,7 @@ pytest *args="":
 [group('python')]
 {% endif %}
 sphinx:
-    uv run sphinx-build docs docs/_build/html
+    uv run sphinx-build -W --keep-going docs docs/_build/html
 {% endif %}
 
 {% if build_system == "maturin" %}
@@ -79,6 +80,7 @@ typos:
     uv run typos
 {% if project_type == "application" %}
 
-run *args="":
-    uv run {{ script_name }} {{ '{{' }}args{{ '}}' }}
+[positional-arguments]
+run *args:
+    uv run {{ script_name }} "$@"
 {% endif %}

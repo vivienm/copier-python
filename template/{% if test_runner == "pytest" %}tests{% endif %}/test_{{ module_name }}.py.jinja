@@ -1,5 +1,14 @@
+{% if project_type == "bare" %}
+import pytest
+
+
+@pytest.mark.skip(reason="Add tests for your project.")
+def test_placeholder() -> None:
+    pass
+{% else %}
 from {{ module_name }} import hello
 
 
 def test_hello() -> None:
-    assert hello() == "Hello from {{ project_name }}!"
+    assert hello() == "Hello"
+{% endif %}

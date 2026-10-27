@@ -2,8 +2,8 @@ use pyo3::prelude::*;
 
 /// Returns a greeting.
 #[pyfunction]
-fn hello() -> String {
-    "Hello from {{ project_name }}!".to_string()
+fn hello() -> &'static str {
+    "Hello"
 }
 
 /// Low-level extension module.

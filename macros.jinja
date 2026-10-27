@@ -1,0 +1,18 @@
+{# Prefer the Python quote style that needs fewer escapes, as Ruff does. #}
+{% macro python_string(value) -%}
+{{ ('%r' | format(value)) if value.count('"') > value.count("'") else value | to_json(ensure_ascii=False) }}
+{%- endmacro %}
+
+{# JSON permits a literal DEL character, but TOML requires it to be escaped. #}
+{% macro toml_string(value) -%}
+{{ value | to_json(ensure_ascii=False) | replace('\x7f', '\\u007f') }}
+{%- endmacro %}
+
+{# Escape ASCII punctuation so plain text cannot become reStructuredText markup. #}
+{% macro rst_text(value) -%}
+{{ value | regex_replace('([!-/:-@\\[-`{-~])', '\\\\\\1') }}
+{%- endmacro %}
+
+{% macro nix_string(value) -%}
+"{{ value | replace('\\', '\\\\') | replace('"', '\\"') | replace('${', '\\${') | replace('\n', '\\n') | replace('\r', '\\r') | replace('\t', '\\t') }}"
+{%- endmacro %}
