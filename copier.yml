@@ -123,7 +123,7 @@ script_name:
 python_version:
   help: "Minimum Python version"
   type: "str"
-  default: "3.14"
+  default: "3.15"
   validator: >
     {%- if not python_version | regex_search('^3\\.\\d{1,2}\\Z') -%}
     The Python version must be in the format "3.x".

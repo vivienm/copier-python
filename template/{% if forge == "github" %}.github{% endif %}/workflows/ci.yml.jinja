@@ -14,26 +14,26 @@ jobs:
     runs-on: "ubuntu-latest"
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v6"
+        uses: "actions/checkout@v7"
 {% if build_system == "maturin" %}
       - name: "Install the Rust toolchain"
         uses: "dtolnay/rust-toolchain@stable"
         with:
           components: "clippy, rustfmt"
       - name: "Install sccache"
-        uses: "mozilla-actions/sccache-action@v0.0.10"
+        uses: "mozilla-actions/sccache-action@v0.0.11"
       - name: "Install development tools"
         uses: "taiki-e/install-action@v2"
         with:
           tool: "cargo-audit"
 {% endif %}
       - name: "Install uv"
-        uses: "astral-sh/setup-uv@v8.1.0"
+        uses: "astral-sh/setup-uv@v10.3.2"
         with:
           enable-cache: true
 {% if build_system == "maturin" %}
       - name: "Cache Cargo directories"
-        uses: "actions/cache@v5"
+        uses: "actions/cache@v6"
         with:
 {# Directory ~/.cargo/bin/ is populated by taiki-e/install-action, we don't want to cache it #}
           path: |

@@ -2,7 +2,7 @@
 
 An opinionated [Copier](https://copier.readthedocs.io/en/stable/) template for Python projects managed by [uv](https://docs.astral.sh/uv/).
 
-Generated projects require Python 3.11 or newer.
+Generated projects require Python 3.11 or newer (3.15 by default).
 
 ## Features
 

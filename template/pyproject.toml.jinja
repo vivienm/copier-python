@@ -13,7 +13,7 @@ classifiers = ["Private :: Do Not Upload"]
 requires-python = ">={{ python_version }}"
 {% if project_type == "application" %}
 dependencies = [
-    "typer-slim>=0.12.3",
+    "typer>=0.27.3",
 ]
 {% else %}
 dependencies = []
@@ -38,13 +38,13 @@ Issues = {{ toml_string(repo_url ~ "/issues") }}
 
 [build-system]
 {% if build_system == "uv" %}
-requires = ["uv_build>=0.13.5,<0.14"]
+requires = ["uv_build>=0.13.6,<0.14"]
 build-backend = "uv_build"
 {% elif build_system == "hatchling" %}
-requires = ["hatchling"]
+requires = ["hatchling>=1.32.4"]
 build-backend = "hatchling.build"
 {% elif build_system == "maturin" %}
-requires = ["maturin>=1.0,<2.0"]
+requires = ["maturin>=1.15.0,<2.0"]
 build-backend = "maturin"
 {% endif %}
 {% endif %}
@@ -52,24 +52,31 @@ build-backend = "maturin"
 [dependency-groups]
 dev = [
 {% if doc_generator == "sphinx" %}
-    "furo>=2024.8.6",
+    "furo>=2025.12.19",
 {% endif %}
 {% if type_checker == "mypy" %}
-    "mypy>=1.11.0",
+    "mypy>=2.4.0",
 {% endif %}
 {% if test_runner == "pytest" %}
-    "pytest>=8.3.1",
-    "pytest-randomly>=3.15.0",
+    "pytest>=9.1.1",
+    "pytest-randomly>=5.0.0",
 {% endif %}
-    "ruff>=0.5.4",
-    "rust-just>=1.43.1",
+    "ruff>=0.17.3",
+    "rust-just>=1.59.0",
 {% if doc_generator == "sphinx" %}
-    "sphinx>=8.0.2",
+{# Sphinx 9.1 requires Python 3.12; Sphinx 9.2 requires Python 3.13. #}
+{% if python_version_info >= [3, 13] %}
+    "sphinx>=9.2.0",
+{% elif python_version_info >= [3, 12] %}
+    "sphinx>=9.1.1",
+{% else %}
+    "sphinx>=9.0.4",
+{% endif %}
 {% endif %}
 {% if type_checker == "ty" %}
-    "ty>=0.0.7",
+    "ty>=0.0.92",
 {% endif %}
-    "typos>=1.30.0",
+    "typos>=1.51.1",
 ]
 {% if build_system == "maturin" %}
 
