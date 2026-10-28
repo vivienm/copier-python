@@ -229,5 +229,8 @@ pages_url:
   when: false
   default: >
     {%- if github_pages -%}
-    https://{{ github_user }}.github.io/{{ github_repo }}
+    https://{{ github_user | lower }}.github.io
+    {%- if github_repo | lower != ((github_user | lower) ~ '.github.io') -%}
+    /{{ github_repo }}
+    {%- endif -%}
     {%- endif -%}

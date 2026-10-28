@@ -52,6 +52,8 @@ uv run ruff format
 uv run just ci
 ```
 
+If you enabled `github_pages`, [configure your GitHub repository](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site) before the first push to its default branch: in **Settings → Pages → Build and deployment**, set **Source** to **GitHub Actions**. The generated workflow will then publish the project documentation.
+
 You are now ready to start coding!
 
 Later, to update your project as this template evolves, run:
