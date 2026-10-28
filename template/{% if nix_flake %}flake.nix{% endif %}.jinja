@@ -30,6 +30,7 @@
     {
       nixpkgs,
 {% if project_type == "application" %}
+      self,
       pyproject-nix,
       uv2nix,
       pyproject-build-systems,
@@ -71,6 +72,15 @@
       eachSystem = f: lib.genAttrs systems (system: f pkgsFor.${system});
 
       pythonFor = pkgs: pkgs."python${lib.replaceStrings [ "." ] [ "" ] pythonVersion}";
+{% if project_type == "application" %}
+
+      pythonSetFor =
+        pkgs:
+        (pkgs.callPackage pyproject-nix.build.packages {
+          python = pythonFor pkgs;
+        }).overrideScope
+          pyprojectOverlay;
+{% endif %}
     in
     {
 {% if project_type == "application" %}
@@ -79,11 +89,7 @@
           let
             mainProgram = "{{ script_name }}";
 
-            pythonSet =
-              (pkgs.callPackage pyproject-nix.build.packages {
-                python = pythonFor pkgs;
-              }).overrideScope
-                pyprojectOverlay;
+            pythonSet = pythonSetFor pkgs;
 
             virtualenv = pythonSet.mkVirtualEnv "${pyprojectToml.project.name}-env" workspace.deps.default;
           in
@@ -106,6 +112,29 @@
               mkdir -p $out/bin
               ln -s ${virtualenv}/bin/${mainProgram} $out/bin/${mainProgram}
             '';
+      });
+
+      checks = lib.genAttrs systems (system: {
+        package = self.packages.${system}.default;
+{% if test_runner == "pytest" %}
+
+        pytest =
+          let
+            pkgs = pkgsFor.${system};
+            pythonSet = pythonSetFor pkgs;
+            virtualenv = pythonSet.mkVirtualEnv "${pyprojectToml.project.name}-test-env" workspace.deps.groups;
+          in
+          pkgs.stdenv.mkDerivation {
+            name = "${pyprojectToml.project.name}-pytest";
+            src = self;
+            nativeBuildInputs = [ virtualenv ];
+            dontConfigure = true;
+            dontBuild = true;
+            doCheck = true;
+            checkPhase = "pytest";
+            installPhase = "touch $out";
+          };
+{% endif %}
       });
 
 {% endif %}
