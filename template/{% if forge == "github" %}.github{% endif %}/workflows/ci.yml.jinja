@@ -46,6 +46,8 @@ jobs:
             target/
           key: "${{ '{{' }} runner.os {{ '}}' }}-cargo-${{ '{{' }} hashFiles('Cargo.lock') {{ '}}' }}"
           restore-keys: "${{ '{{' }} runner.os {{ '}}' }}-cargo-"
+      - name: "Fetch Rust dependencies"
+        run: "cargo fetch --locked"
 {% endif %}
       - name: "Run Just"
 {% if build_system == "maturin" %}

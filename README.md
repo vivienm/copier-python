@@ -35,6 +35,20 @@ cd path/to/your/project
 git init
 ```
 
+If you enabled `nix_flake`, use [Nix with flakes enabled](https://wiki.nixos.org/wiki/Flakes). Track the generated files and enter the development shell, which provides Python, uv and the development tools (including Rust tools for maturin):
+
+```bash
+git add .
+nix develop
+```
+
+Otherwise, if you chose maturin, install Rust using rustup, then install the required components and development tools:
+
+```bash
+rustup component add rustfmt clippy
+cargo install --locked cargo-audit
+```
+
 Upgrade the dependencies and update their minimum versions in `pyproject.toml`:
 
 ```bash

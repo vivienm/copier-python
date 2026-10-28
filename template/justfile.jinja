@@ -1,4 +1,4 @@
-ci: lint audit{% if doc_generator != "none" %} docs{% endif %}{% if test_runner != "none" %} test{% endif %}{{ '' }}
+ci: lint audit{% if doc_generator != "none" %} docs{% endif %}{% if build_system == "maturin" or test_runner != "none" %} test{% endif %}{{ '' }}
 
 lint:{% if build_system == "maturin" %} cargo-fmt cargo-clippy{% endif %} ruff {{ type_checker }} typos
 
@@ -7,9 +7,9 @@ audit:{% if build_system == "maturin" %} cargo-audit{% endif %} uv-audit
 
 docs: {{ doc_generator }}
 {% endif %}
-{% if test_runner != "none" %}
+{% if build_system == "maturin" or test_runner != "none" %}
 
-test: {{ test_runner }}
+test:{% if build_system == "maturin" %} cargo-test{% endif %}{% if test_runner != "none" %} {{ test_runner }}{% endif %}{{ '' }}
 {% endif %}
 {% if build_system == "maturin" %}
 
@@ -20,6 +20,10 @@ cargo-fmt:
 [group('rust')]
 cargo-clippy:
     cargo clippy --all-targets
+
+[group('rust')]
+cargo-test:
+    cargo test
 
 [group('rust')]
 cargo-audit:
