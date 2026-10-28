@@ -10,7 +10,7 @@ Generated projects require Python 3.11 or newer (3.15 by default).
 * Rust extensions with [maturin](https://www.maturin.rs/).
 * Pre-configured tools for code formatting, quality analysis, documentation and testing:
   * [ruff](https://docs.astral.sh/ruff/)
-  * [mypy](https://mypy.readthedocs.io/) or [ty](https://docs.astral.sh/ty/)
+  * [ty](https://docs.astral.sh/ty/)
   * [pytest](https://docs.pytest.org/en/stable/)
   * [sphinx](https://sphinx-doc.org/) ([furo theme](https://pradyunsg.me/furo/))
   * uv audit

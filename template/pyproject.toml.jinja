@@ -54,9 +54,6 @@ dev = [
 {% if doc_generator == "sphinx" %}
     "furo>=2025.12.19",
 {% endif %}
-{% if type_checker == "mypy" %}
-    "mypy>=2.4.0",
-{% endif %}
 {% if test_runner == "pytest" %}
     "pytest>=9.1.1",
     "pytest-randomly>=5.0.0",
@@ -73,9 +70,7 @@ dev = [
     "sphinx>=9.0.4",
 {% endif %}
 {% endif %}
-{% if type_checker == "ty" %}
     "ty>=0.0.92",
-{% endif %}
     "typos>=1.51.1",
 ]
 {% if build_system == "maturin" %}
@@ -92,20 +87,13 @@ cache-keys = [
 python-source = "python"
 module-name = "{{ module_name }}._core"
 {% endif %}
-{% if type_checker == "mypy" %}
-
-[tool.mypy]
-strict = true
-{% endif %}
 
 [tool.ruff.lint]
 extend-select = [
     "I",  # isort
     "RUF",  # Ruff
-{% if type_checker == "ty" %}
 {# https://docs.astral.sh/ty/reference/typing-faq/#does-ty-have-a-strict-mode #}
     "ANN",  # Annotations
-{% endif %}
 ]
 unfixable = [
     "F401",  # unused imports

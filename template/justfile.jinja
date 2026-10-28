@@ -1,6 +1,6 @@
 ci: lint audit{% if doc_generator != "none" %} docs{% endif %}{% if build_system == "maturin" or test_runner != "none" %} test{% endif %}{{ '' }}
 
-lint:{% if build_system == "maturin" %} cargo-fmt cargo-clippy{% endif %} ruff {{ type_checker }} typos
+lint:{% if build_system == "maturin" %} cargo-fmt cargo-clippy{% endif %} ruff ty typos
 
 audit:{% if build_system == "maturin" %} cargo-audit{% endif %} uv-audit
 {% if doc_generator != "none" %}
@@ -50,12 +50,8 @@ ruff-format:
 {% if build_system == "maturin" %}
 [group('python')]
 {% endif %}
-{{ type_checker }}:
-{% if type_checker == "mypy" %}
-    uv run mypy .
-{% elif type_checker == "ty" %}
+ty:
     uv run ty check
-{% endif %}
 {% if test_runner == "pytest" %}
 
 {% if build_system == "maturin" %}
